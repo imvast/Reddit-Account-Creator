@@ -39,7 +39,7 @@ def main():
     if "reddit_session" in res.cookies:
         log.log("Account Created.", Username=username, Email=email)
         with open("./created.txt", "a+") as f:
-            f.write(f"{email}:")
+            f.write(f"{email}:{username}:t]@9kYz)yCjys9V:{res.cookies.get('reddit_session')}")
     elif "BAD_CAPTCHA" in res.text:
         log.error("ur solver sucks lil bro")
     elif "RATELIMIT" in res.text:
