@@ -1,7 +1,7 @@
 <div align="center">
   <kbd>
   <a href="https://github.com/imvast/Reddit-Account-Creator">
-    <img src="[https://github.com/imvast/Reddit-Account-Creator/assets/60797067/333f1cca-0c9a-4ae3-8ad5-6fb2a8655c34](https://github.com/imvast/Reddit-Account-Creator/assets/60797067/00bd7fe9-f91a-4893-8003-bb7dde3c151e)" alt="Logo" style="width: 110%; height: 110%;">
+    <img src="https://github.com/imvast/Reddit-Account-Creator/assets/60797067/e5864bb9-a7f4-41a5-a191-427f440883c2" alt="Logo" style="width: 110%; height: 110%;">
   </a>
   </kbd>
   
