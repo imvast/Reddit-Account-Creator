@@ -24,11 +24,11 @@
 
 ### ⚙️ Installation
 
-- Requires: `Python 3.10+`
+- Requires: `Python 3.7+`
 - Install the requirements: `pip install -r requirements.txt`
 - Add your proxies to `./proxies.txt`
 - Edit the `./config.json` to your preference
-- Start: `python3 main.py`
+- Start: `py main.py` or for linux `python3 main.py`
 
 ---
 
@@ -38,7 +38,7 @@
 - Fast speeds
 - Highly configurable
 - Works with capsolver and free proxies
-- Saves the logins and cookies [email:user:pass:cookie]
+- Saves the logins and cookies [user:email:pass:cookie]
 
 
 ---

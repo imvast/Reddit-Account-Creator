@@ -25,9 +25,7 @@ class RedditMain:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
         }
 
-    def get_usernames(self):
-        url = "https://www.reddit.com/svc/shreddit/graphql"
-
+    def getUsernames(self):
         headers = {
             **self.common_headers,
             "Content-Type": "application/json",
@@ -40,9 +38,11 @@ class RedditMain:
             "csrf_token": self.client.cookies.get("csrf_token"),
         }
 
-        return self.client.post(url, headers=headers, json=payload)
+        return self.client.post(
+            "https://www.reddit.com/svc/shreddit/graphql", headers=headers, json=payload
+        )
 
-    def Register(self, cap_token, email, username):
+    def register(self, cap_token, email, username):
         headers = {
             **self.common_headers,
             "content-type": "application/x-www-form-urlencoded",
