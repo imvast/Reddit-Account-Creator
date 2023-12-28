@@ -16,44 +16,56 @@ from secrets import token_hex
 from random import choice
 from signal import signal, SIGINT
 from json import load
+from time import sleep
 from os import _exit
 
-
-proxies = [i.strip() for i in open("./proxies.txt", "r")]
 
 
 def main():
     session = Session(client_identifier="firefox_121", random_tls_extension_order=True)
+    
     proxy = choice(proxies)
     session.proxies = {"http": f"http://{proxy}", "https": f"http://{proxy}"}
-    session.cookies = RedditCookies(session).get_cookies()
-    reddit = RedditMain(session)
+    session.cookies = RedditCookies(session)()
     
+    reddit = RedditMain(session)
+
     capKey = Captcha._solve_recaptcha()
     log.debug(f"Captcha Solved. [{capKey[:25]}...]")
+
+    username = reddit.getUsernames().json().get("data").get("generatedUsernames")[0]
+    if not username:
+        log.error("could not generate username")
+        return
     
-    username = reddit.get_usernames().json().get("data").get("generatedUsernames")[0]
     email = f"{token_hex(6)}@tempmail.cc"
-    
-    res = reddit.Register(capKey, email, username)
+
+    res = reddit.register(capKey, email, username)
     if "reddit_session" in res.cookies:
         log.log("Account Created.", Username=username, Email=email)
-        with open("./created.txt", "a+") as f:
-            f.write(f"{email}:{username}:t]@9kYz)yCjys9V:{res.cookies.get('reddit_session')}")
+        open("./created.txt", "a+").write(
+            f"{username}:{email}:t]@9kYz)yCjys9V:{res.cookies.get('reddit_session')}"
+        )
+
     elif "BAD_CAPTCHA" in res.text:
         log.error("ur solver sucks lil bro")
     elif "RATELIMIT" in res.text:
         log.error("ratelimit?? what a loser")
     else:
-        print(res.text)
-        print(res.status_code)
+        print(res.text, res.status_code)
 
 
 if __name__ == "__main__":
-    signal(SIGINT, lambda *args: (log.fatal("Keyboard Interrupt Detected."), _exit(0)))
+    signal(SIGINT, lambda *_: (log.fatal("Keyboard Interrupt Detected."), _exit(0)))
 
     config = load(open("./config.json", "r"))
+    proxies = [i.strip() for i in open("./proxies.txt", "r")]
+    executor = ThreadPoolExecutor(max_workers=config.get("threads"))
 
-    with ThreadPoolExecutor(max_workers=config.get("threads")) as executor:
-        while True:
-            executor.submit(main)
+    if not proxies:
+        log.fatal("no proxies found")
+        _exit(-136312)
+
+    while True:
+        executor.submit(main)
+        sleep(.1)
